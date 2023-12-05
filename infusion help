@@ -1,0 +1,28 @@
+**Infusion Help**
+
+*The infusion alias is here to help you manage infusions for your artificer. It will keep track of your infusions and for any infusion which grants additional abilities will add a suitable actions to your character for that ability.*
+
+__Infusion help and guidance__
+
+`!infusion help` - show this help page
+`!infusion` -  list your current infusions and infusion counter values
+`!infusion list [search]` - list all supported infusions available at your Artificer level, if search text is entered only those matching the text will be listed.
+
+__Creating an infusion__
+
+`!infusion add <name> [armor]` - will infuse an item of the named type and add it to your character
+
+Artificer armorer with the Armor Modifications feature may use the `armor` option. This will cause the infusion to be created using the additional infusion slots granted by Armor Modifications
+
+__Deleting an infusion__
+
+`!infusion del <name>` - will remove an infusion of the named type from your character
+
+*If the infusion was created using Armor Modifications the alias will remove it appropriately*
+
+__Loaned infusions__
+
+Infusions can be loaned to other characters by an artificer. When using this alias to receive a loaned infusion you must specify the level of artificer who infused the item. A loan item will work exactly like any other infusion but will not require or use infusion slots on the character holding it.
+
+`!infusion add <name> -l <artificer level>` - this will be marked in the character infusions list as a loan 
+

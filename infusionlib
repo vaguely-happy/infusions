@@ -1,0 +1,179 @@
+# infusionlib
+# Functions to support artificer infusions
+#
+# The data structure for this is as follows. 
+# The cvar infusions is a comma separated list of current infusions
+# The cvar loan_infusions is a comma separated list of those infusions which are loaned by another artificer
+# The cvar armor_infusions is a comma separted list of those infusions which are made using the armorer Armor Modifications feature
+#
+# The cc Infuse Items keeps a track of the core infusions
+# The cc Infuse Armor keeps a track of the armorer Armor Modifications additional infusions
+#
+#
+# 
+# Constants
+
+ch = character()
+cmbt = combat()
+header = "!embed -title 'Infusion' "
+
+# Returns a fuzzy match of the infusion name if one is in the currently held infusions.
+def matchInfusion(infusion):
+	keylist = getInfusions()
+	inf = [b for b in keylist if b == infusion]
+	if not inf:
+		inf = [b for b in keylist if infusion.lower() == b.lower()]
+	if not inf:
+		inf = [b for b in keylist if infusion in b]
+	if not inf:
+		inf = [b for b in keylist if infusion.lower() in b.lower()]
+	if inf:
+		return inf[0]
+	else:
+		return infusion
+
+
+# Returns the set of infusions as a list
+def getInfusions() :
+	infstring = ch.get_cvar("infusions")
+	if infstring:
+		return infstring.split(", ")
+	else:
+		return []
+		
+# Returns the set of loan infusions as a list
+def getLoans() :
+	infstring = ch.get_cvar("loan_infusions")
+	if infstring:
+		return infstring.split(", ")
+	else:
+		return []
+
+		
+# Returns the set of armor infusions as a list
+def getArmorInf() :
+	infstring = ch.get_cvar("armor_infusions")
+	if infstring:
+		return infstring.split(", ")
+	else:
+		return []
+
+# Update or create the infusion gvar
+def setInfusions(infList):
+	infString = ", ".join(infList)
+	ch.set_cvar("infusions",infString)
+	
+# Update or create the loan infusion gvar
+def setLoans(infList):
+	infString = ", ".join(infList)
+	ch.set_cvar("loan_infusions",infString)
+	
+# Update or create the armor infusion gvar
+def setArmorInf(infList):
+	infString = ", ".join(infList)
+	ch.set_cvar("armor_infusions",infString)
+	
+# Return boolean for whether an infusion is on the infusion list. 
+def isInfusion(infusion):
+	inflist = getInfusions()
+	return infusion in inflist
+	
+# Return boolean for whether an infusion is on the armor infusion list. 
+def isArmorInf(infusion):
+	inflist = getArmorInf()
+	return infusion in inflist
+	
+# Return boolean for whether an infusion is on the infusion Loans list. 
+def isLoans(infusion):
+	inflist = getLoans()
+	return infusion in inflist
+	
+	
+# Add to the infusion list and update the gvar
+def addInfusion(infusion):
+	inflist = getInfusions()
+	inflist += [infusion]
+	setInfusions(inflist)
+	
+# Add to the armororer infusion list and update the gvar
+def addArmorInf(infusion):
+	inflist = getArmorInf()
+	inflist += [infusion]
+	setArmorInf(inflist)
+	
+# Add to the loan infusion list and update the gvar
+def addLoans(infusion):
+	inflist = getLoans()
+	inflist += [infusion]
+	setLoans(inflist)
+	
+# Remove infusion from all relevant lists
+def delInfusion(infusion):
+	infList = getInfusions()
+	infList.remove(infusion)
+	setInfusions(infList)
+	if isArmorInf(infusion):
+		armList = getArmorInf()
+		armList.remove(infusion)
+		setArmorInf(armList)
+	if isLoans(infusion):
+		loanList = getLoans()
+		loanList.remove(infusion)
+		setLoans(loanList)
+
+# Create the CC for an infusion 
+def createCC(feature) :
+	if "counter" in feature:
+		if not ch.cc_exists(feature.counter) :
+			ch.create_cc(feature.counter,minVal=0,maxVal=feature.max,reset=feature.reset,reset_by=feature.resetby,dispType="bubble")
+
+# Delete the CC for an infusion
+def deleteCC(feature) :
+	if "counter" in feature:
+		if ch.cc_exists(feature.counter):
+			ch.delete_cc(feature.counter)
+
+# Check to see if the counter exists for Armor Modifications and create if not
+def checkArmorer(cc):
+	if not ch.cc_exists(cc) :
+			ch.create_cc(cc,minVal=0,maxVal=2,dispType="bubble")
+
+		
+# Reduce the infusions counter by one - return false if that is not possible for any reason
+def useInfusionCC(cc) :
+	if ch.cc_exists(cc):
+		if ch.get_cc(cc) > 0:
+			ch.mod_cc(cc,-1)
+			return True
+	return False
+		
+# Increase the infusions counter by one - return false if no counter but otherwise be tolerant of overflow
+def remInfusionCC(cc) :
+	if ch.cc_exists(cc):
+		ch.mod_cc(cc,1)
+		return True
+	return False		
+
+# Format up an error message if more than one match
+def duplicateMessage(feature) :
+	text = header
+	desc = "More than one infusion matched the name supplied. Which did you mean?\n"
+	for x in feature:
+		desc += "\n" + x.infusion
+	text += f'''\n-desc "{desc}"'''
+	text += f"\n-footer '{ctx.prefix+ctx.alias} by vaguely_happy#3490'"
+	return text
+	
+# Format up an error message if no match found
+def noMatchFound(infusion) :
+	text = header
+	desc = "No infusion matched the name supplied.\n"
+	desc += "\n" + infusion
+	text += f'''\n-desc "{desc}"'''
+	text += f"\n-footer '{ctx.prefix+ctx.alias} by vaguely_happy#3490'"
+	return text
+	
+# Use the specific string formatting of the actions to return an action name. 
+def getActionName(actionstr) :
+	actions = actionstr.split(",")
+	return actions[0].replace("'name': '","").replace("'","").replace("{","").strip()
