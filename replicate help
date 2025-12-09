@@ -1,0 +1,39 @@
+**Replicate Help**
+
+*The replicate alias is here to help you manage replications for your artificer. It will keep track of your replications and for any replication which grants additional abilities will add a suitable actions to your character for that ability.*
+
+__Replicate help and guidance__
+
+`!replicate help` - show this help page
+`!replicate` -  list your current replications and replication counter values
+`!replicate list [search]` - list all supported replications available at your Artificer level, if search text is entered only those matching the text will be listed.
+
+__Creating an infusion__
+
+`!replicate <name> add  [armor]` - will replicate an item of the named type and add it to your character
+
+Artificer armorer with the Armor Modifications feature may use the `armor` option. This will cause the replication to be created using the additional infusion slot granted by Armor Replication.
+
+__Deleting a replication__
+
+`!replicate <name> del` - will remove a replication of the named type from your character
+
+*If the replication was created using Armor Replication the alias will remove it appropriately*
+
+__Generic Items__
+
+At levels 2, 10 and 14 an artificer can replicate items not specifically listed at rarities of common, uncommon and rare respectively. To create a generic item
+
+`!replicate <rarity> <name>`
+
+To delete a generic item and free up the slot use
+
+`!replicate <rarity> <name> del`
+
+
+__Loaned replications__
+
+Replicated items can be loaned to other characters by an artificer. When using this alias to receive a loaned replication you must specify the level of artificer who replicated the item. A loan item will work exactly like any other replicated item but will not require or use replication slots on the character holding it.
+
+`!replicate <name> add  -l <artificer level>` - this will be marked in the character infusions list as a loan 
+
