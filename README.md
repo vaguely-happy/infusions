@@ -7,6 +7,6 @@ See `!replicate help` for details of how to use
 
 The main parts of the code are in replicate (the alias) sub-aliases and infusionlib (held as a gvar lib)
 
-The data is all held in infusiondefs which is deployed as a gvar. This is written and maintained in infustions 2025.xlsx and for legacy the infusions.xlsx which is where the individual actions are stored in a more accessible form.
+The data is all held in infusiondefs which is deployed as a gvar. This is written and maintained in infusions 2024.xlsx and for legacy the infusions.xlsx which is where the individual actions are stored in a more accessible form.
 
 TODO. Under active development are new sub-alaises for replicate to handle the various class features in the 2025 rules which charge, remove or change replicated items.
