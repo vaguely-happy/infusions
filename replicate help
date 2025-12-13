@@ -30,10 +30,21 @@ To delete a generic item and free up the slot use
 
 `!replicate <rarity> <name> del`
 
+__Magic Item Tinker__
+
+The abilities in Magic Item Tinker (6th level Artificer) have been integrated with replicate
+
+`!replicate charge <name> -l <level>` Will use a spell slot to replace depleted charges in the named replication
+
+`!replicate drain <name>` will remove the named replication and create an additional spell slot of the appropriate level and maintain the counter of times you may do this
+
+`!replicate transmute <name> <name>` will replace the first named replication with a new replication type named in the second argument and maintain the counter of times you may do this
+
+The drain feature can create slots in excess of the normal maximum. The alias creates a new cc which is compatible with the one created by my existing !font and !scast aliases. Casting with !scast will seamlessly use excess slots from drain when no other slots remain. These aliases can be found at https://avrae.io/dashboard/workshop/63642cf19c51e9ffa9ce9d8b
+
 
 __Loaned replications__
 
 Replicated items can be loaned to other characters by an artificer. When using this alias to receive a loaned replication you must specify the level of artificer who replicated the item. A loan item will work exactly like any other replicated item but will not require or use replication slots on the character holding it.
 
 `!replicate <name> add  -l <artificer level>` - this will be marked in the character infusions list as a loan 
-
